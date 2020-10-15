@@ -1,0 +1,12 @@
+int getMaxSum(Node* root)
+{
+    if(!root)
+    return 0;
+    int odd=getMaxSum(root->left)+getMaxSum(root->right)
+    int even= root->data;
+    if(root->left)
+    even+=getMaxSum(root->left->right)+getMaxSum(root->left->right);
+    if(root->right)
+    even+=getMaxSum(root->right->left)+getMaxSum(root->right->right);
+    return max(odd,even);
+}
