@@ -1,0 +1,52 @@
+Q: https://codeforces.com/contest/1430/problem/F
+//agrawal117
+//chahatagrawal117
+#include<bits/stdc++.h>
+#define endl '\n'
+#define mod 1000000007
+typedef long long int ll;
+using namespace std;
+#define MAX 2005
+ll n,k;
+const ll oo=1e15;
+pair<ll,ll> arr[MAX];
+ll Data[MAX];
+
+unordered_map<ll,ll> dp[MAX];
+ll solve(ll i, ll bullets)
+{
+    if(i==n+1) return 0;
+    if(dp[i].count(bullets)) return dp[i][bullets];
+    
+    ll available=bullets+(arr[i].second-arr[i].first)*k;
+    if(available<Data[i]) return dp[i][bullets]=oo;
+    
+    
+    ll ans=Data[i]+solve(i+1,(available-Data[i])%k);
+    if(ans>=oo) ans=oo;
+    
+    ll left=(available-Data[i])/k;
+    if(i+1<=n && (left>0|| arr[i].second!=arr[i+1].first))
+    {
+        ll val=Data[i]+(available-Data[i])%k + solve(i+1,k);
+        if(val>=oo) val=oo;
+        ans=min(ans,val);
+    }
+    
+    return dp[i][bullets]=ans;
+}
+
+int main()
+{
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    cin>>n>>k;
+    for(int i=1;i<=n;i++){
+        cin>>arr[i].first>>arr[i].second>>Data[i];
+    }
+    
+    ll ans=solve(1,k);
+    if(ans>=oo) ans=-1;
+    cout<<ans<<endl;
+}
